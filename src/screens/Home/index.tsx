@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import {
     Text,
     TextInput,
@@ -18,18 +18,27 @@ import { ImagesAssets } from '../../assets/ImagesAssets';
 import { styles } from './styles';
 
 export function Home() {
-    const [tasks, setTasks] = useState<string[]>([]);
+    const [tasksIncompleted, setTasksIncompleted] = useState<string[]>([]);
+    const [tasksCompleted, setTasksCompleted] = useState<string[]>([]);
     const [taskDescription, setTaskDescription] = useState('');
+    const [counterTasks, setCounterTasks] = useState(0);
+    const [counterTasksCompleted, setCounterTasksCompleted] = useState(0);
 
     function handleTaskAdd() {
-        /*if (tasks.includes(taskDescription)) {
-            return Alert.alert("Já existe alguém com esse nome.");
-        }*/
+        if (tasksIncompleted.includes(taskDescription)) {
+            return Alert.alert("Tarefa já existe!");
+        }
 
-        setTasks(prevState => [...prevState, taskDescription]);
+        setTasksIncompleted(prevState => [taskDescription, ...prevState]);
         setTaskDescription('');
+        setCounterTasks(prevState => prevState + 1);
     }
+
     function handleTaskRemove(name: string) {
+        if (tasksCompleted.includes(name)) {
+            return Alert.alert("Não é possível excluir uma tarefa completa!");
+        }
+
         Alert.alert("Remover", `Remover a tarefa ${name}?`, [
             {
                 text: "Cancelar",
@@ -37,10 +46,34 @@ export function Home() {
             },
             {
                 text: "Sim",
-                onPress: () => setTasks(prevState => prevState.filter(task => task !== name))
+                onPress: () => {
+                    setTasksIncompleted(prevState => prevState.filter(task => task !== name));
+                    setCounterTasks(prevState => prevState - 1);
+                }
             },
         ])
     }
+
+    function changeTaskForComplete(name: string) {
+        setTasksCompleted(prevState => [name, ...prevState]);
+        setTasksIncompleted(prevState => prevState.filter(task => task !== name));
+        setCounterTasksCompleted(prevState => prevState + 1);
+    }
+
+    function changeTaskForIncomplete(name: string) {
+        setTasksIncompleted(prevState => [name, ...prevState]);
+        setTasksCompleted(prevState => prevState.filter(task => task !== name));
+        setCounterTasksCompleted(prevState => prevState - 1);
+    }
+
+    function handleTaskStatus(name: string) {
+        if (tasksCompleted.includes(name)) {
+            changeTaskForIncomplete(name);
+        } else {
+            changeTaskForComplete(name);
+        }
+    }
+
 
     return (
         <View style={styles.container}>
@@ -73,22 +106,28 @@ export function Home() {
             <View style={styles.filtersContainer}>
                 <View style={styles.filterPerContainer}>
                     <Text style={styles.filter1Label}>Criadas</Text>
-                    <View style={styles.filterCountContainer}><Text style={styles.filterCount}>0</Text></View>
+                    <View style={styles.filterCountContainer}>
+                        <Text style={styles.filterCount}>{counterTasks}</Text>
+                    </View>
                 </View>
                 <View style={styles.filterPerContainer}>
                     <Text style={styles.filter2Label}>Concluídas</Text>
-                    <View style={styles.filterCountContainer}><Text style={styles.filterCount}>0</Text></View>
+                    <View style={styles.filterCountContainer}>
+                        <Text style={styles.filterCount}>{counterTasksCompleted}</Text>
+                    </View>
                 </View>
             </View>
 
             <FlatList
-                data={tasks}
+                data={[...tasksIncompleted, ...tasksCompleted]}
                 keyExtractor={item => item}
                 renderItem={({ item }) => (
                     <Task
                         key={item}
-                        name={item}
+                        description={item}
+                        status={(tasksCompleted.includes(item) ? "completed" : "incompleted")}
                         onRemove={() => handleTaskRemove(item)}
+                        onChangeStatus={() => handleTaskStatus(item)}
                     />
                 )}
                 showsVerticalScrollIndicator={false}
@@ -104,8 +143,6 @@ export function Home() {
                     </View>
                 )}
             />
-
-
         </View>
     );
 }

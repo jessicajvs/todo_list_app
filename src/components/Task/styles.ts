@@ -9,18 +9,29 @@ export const styles = StyleSheet.create({
         borderRadius: 8,
         marginBottom: 10,
     },
-    name: {
+    descriptionIncompleted: {
         flex: 1,
         color: '#F2F2F2',
         fontFamily: 'Inter',
         fontSize: 14,
         fontWeight: '400',
-        marginLeft: 16,
+    },
+    descriptionCompleted: {
+        flex: 1,
+        color: '#808080',
+        fontFamily: 'Inter',
+        fontSize: 14,
+        fontWeight: '400',
+        textDecorationLine: 'line-through'
     },
     submitButton: {
         width: 56,
         height: 56,
-        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    submitButtonStatus: {
+        width: 50,
         alignItems: 'center',
         justifyContent: 'center'
     },
