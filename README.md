@@ -1,3 +1,12 @@
+## Aplicação de controle de tarefas no estilo **to-do list**, que contém as seguintes funcionalidades:
+
+- Adicionar uma nova tarefa
+- Marcar e desmarcar uma tarefa como concluída
+- Remover uma tarefa da listagem
+
+<img src="/assets/img/todolist.webm">
+--
+
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
