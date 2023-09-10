@@ -1,4 +1,5 @@
 # ToDo List
+## Projeto de estudo do curso React Native 
 
 ### Aplicação de controle de tarefas no estilo **to-do list**, que contém as seguintes funcionalidades:
 
