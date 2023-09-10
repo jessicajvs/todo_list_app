@@ -4,8 +4,7 @@
 - Marcar e desmarcar uma tarefa como concluída
 - Remover uma tarefa da listagem
 
-<img src="/src/assets/img/todolist.webm">
-<img src="/src/assets/img/screenshot.png">
+<img src="/src/assets/img/todolist.gif">
 --
 
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
